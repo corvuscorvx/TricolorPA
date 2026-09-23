@@ -1,3 +1,4 @@
+from typing import Tuple
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -35,4 +36,18 @@ class BasePage:
 
     def get_element_text(self, locator) -> str:
         """Получение текста элемента"""
-        return self.wait_for_element_visible(locator).text
+        element = self.wait_for_element_visible(locator)
+        return element.text
+
+    def scroll_to_element(self, locator: Tuple[str, str]):
+        """Найти элемент в DOM дереве и отцентровать"""
+        element = self.wait.until(ec.presence_of_element_located(locator))
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+        return element
+
+    def wait_for_url_contains(self, url_part):
+        """Ожидание подстроки в URL в новой вкладке"""
+        self.wait.until(lambda driver: len(driver.window_handles) > 1)
+        new_window = self.driver.window_handles[-1]
+        self.driver.switch_to.window(new_window)
+        return self.wait.until(ec.url_contains(url_part))
