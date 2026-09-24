@@ -90,25 +90,25 @@ pip install -r requirements.txt
 ### Запуск всех UI-тестов:
 
 ```bash
-pytest -v tests/tests_demo.py
+pytest -v tests/test_demo.py
 ```
 
 - `pytest` — запускает тестовый фреймворк Pytest.
 - `-v` (`verbose`) — выводит название и статус каждого теста.
-- `tests/tests_demo.py` — путь к файлу с UI-автотестами.
+- `tests/test_demo.py` — путь к файлу с UI-автотестами.
 
 ### Запуск одного теста:
 
 Чтобы запустить один тест из файла, после пути к файлу укажите его имя через `::`:
 
 ```bash
-pytest -v tests/tests_demo.py::<имя_теста>
+pytest -v tests/test_demo.py::<имя_теста>
 ```
 
 ### Запуск с увеличенной детализацией:
 
 ```bash
-pytest -vv tests/tests_demo.py
+pytest -vv tests/test_demo.py
 ```
 
 Ключ `-vv` увеличивает подробность вывода Pytest по сравнению с `-v`.
@@ -128,7 +128,7 @@ addopts = --clean-alluredir --alluredir=allure-results
 Поэтому для запуска UI-тестов и одновременного сохранения результатов Allure достаточно выполнить команду:
 
 ```bash
-pytest -v tests/tests_demo.py
+pytest -v tests/test_demo.py
 ```
 
 После завершения тестового прогона результаты будут сохранены в папке `allure-results`.
