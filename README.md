@@ -68,8 +68,7 @@ TricolorPA/
 1. Клонируйте репозиторий:
 
 ```bash
-git clone [https://github.com/corvuscorvx/TricolorPA.git](https://github.com/corvuscorvx/TricolorPA.git)
-cd TricolorPA
+git clone https://github.com/corvuscorvx/TricolorPA.git
 ```
 
 2. Откройте проект в PyCharm.
