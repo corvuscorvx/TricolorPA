@@ -1,10 +1,10 @@
 import allure
 from selenium.webdriver.common.by import By
 
-from pages.base_page import BasePage
+from pages.browser import Browser
 
 
-class DemoPage(BasePage):
+class DemoPage(Browser):
     COOKIES_POPUP = (By.CSS_SELECTOR, '.cookie-popup__container')
     COOKIES_POPUP_BUTTON = (By.CSS_SELECTOR, 'a.js--cookie-success')
 
@@ -67,7 +67,7 @@ class DemoPage(BasePage):
     @allure.step("Get result text geolocation")
     def get_current_geo_text(self) -> str:
         """Получить текст гео из хэдэра"""
-        return self.get_element_text(self.GEO_BUTTON_HEADER).strip()
+        return self.get_text(self.GEO_BUTTON_HEADER).strip()
 
     @allure.step("Open the help page")
     def open_the_help_page(self):
@@ -89,7 +89,7 @@ class DemoPage(BasePage):
     @allure.step("View sent message")
     def get_current_chat_message(self) -> str:
         """Получить текст сообщения из чата"""
-        return self.get_element_text(self.CHAT_WINDOW)
+        return self.get_text(self.CHAT_WINDOW)
 
     @allure.step("Close the geolocation popup")
     def close_geo_popup(self):
@@ -116,7 +116,7 @@ class DemoPage(BasePage):
     @allure.step("View search results")
     def get_current_search_result(self):
         """Получить текст результатов поиска"""
-        return self.get_element_text(self.SEARCH_RESULT_AREA)
+        return self.get_text(self.SEARCH_RESULT_AREA)
 
     @allure.step("Click the 'Check subscriptions' button")
     def click_check_subscription_button(self):
@@ -126,7 +126,6 @@ class DemoPage(BasePage):
 
     @allure.step("Fill id filed with {number_id}")
     def input_id(self, number_id: int):
-        """Ввести id для проверки"""
         self.send_keys_to_element(self.FIELD_ID, number_id)
 
     @allure.step("Click the check button")
@@ -137,7 +136,7 @@ class DemoPage(BasePage):
     @allure.step("Get error message")
     def get_error_invalid_id(self):
         """Получить текст ошибки првоерки id"""
-        return self.get_element_text(self.ERROR_AREA)
+        return self.get_text(self.ERROR_AREA)
 
     @allure.step("Open oline cinema")
     def open_online_cinema(self):
@@ -147,4 +146,4 @@ class DemoPage(BasePage):
     @allure.step("Waiting for valid URL")
     def wait_for_online_cinema_url(self, url_part):
         """Ожидание урла онлайн-кинотеатра"""
-        self.wait_for_url_contains(url_part)
+        self.wait_for_url_in_new_tab(url_part)

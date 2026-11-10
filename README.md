@@ -8,17 +8,17 @@
 ## Используемый стек
 
 <p align="center">
-  <img src="assets/icons/Python.png" alt="Python" width="40" height="40">
+  <img src="media/icons/Python.png" alt="Python" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Selenium.png" alt="Selenium" width="40" height="40">
+  <img src="media/icons/Selenium.png" alt="Selenium" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Pytest.png" alt="Pytest" width="40" height="40">
+  <img src="media/icons/Pytest.png" alt="Pytest" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Allure.png" alt="Allure" width="40" height="40">
+  <img src="media/icons/Allure.png" alt="Allure" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Jenkins.png" alt="Jenkins" width="40" height="40">
+  <img src="media/icons/Jenkins.png" alt="Jenkins" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Selenoid.png" alt="Selenoid" width="40" height="40">
+  <img src="media/icons/Selenoid.png" alt="Selenoid" width="40" height="40">
 </p>
 
 - **Python** — язык программирования, на котором написаны автотесты.
@@ -42,7 +42,7 @@
 
 ```text
 TricolorPA/
-├── assets/
+├── media/
 │   └── gif/                    # Гифки
 │   └── icons/                  # Иконки технологий для README
 │   └── images/                 # Скриншоты
@@ -142,8 +142,8 @@ allure serve allure-results
 
 ### Отчет Allure
 
-![Отчет Allure](assets/images/Allure_demo.png)
-![Отчет Allure](assets/images/Allure_demo_test.png)
+![Отчет Allure](media/images/Allure_demo.png)
+![Отчет Allure](media/images/Allure_demo_test.png)
 
 
 > Для работы команды `allure serve` на компьютере должны быть установлены Java и Allure Report Engine.
@@ -160,7 +160,7 @@ allure serve allure-results
 
 ### Сборка в Jenkins
 
-![Сборка в Jenkins](assets/images/Jenkins.png)
+![Сборка в Jenkins](media/images/Jenkins.png)
 
 ## Уведомления в Telegram
 
@@ -173,8 +173,8 @@ allure serve allure-results
 
 ### Уведомление от бота
 
-![Уведомление Telegram-бота о завершении Jenkins-сборки](assets/images/Telegram_notification.png)
+![Уведомление Telegram-бота о завершении Jenkins-сборки](media/images/Telegram_notification.png)
 
 ### Демонстрация UI-теста
 
-![Демонстрация выполнения UI-теста](assets/gif/Ui_test_chat.gif)
+![Демонстрация выполнения UI-теста](media/gif/Ui_test_chat.gif)
