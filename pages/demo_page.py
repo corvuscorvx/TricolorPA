@@ -39,30 +39,32 @@ class DemoPage(Browser):
         self.wait_for_element_visible(self.COOKIES_POPUP)
         self.click_element(self.COOKIES_POPUP_BUTTON)
 
-    @staticmethod
-    def _get_district_locator(district_name: str):
-        """Локатор округа"""
-        return By.XPATH, f"//a[contains(@class, 'js--tabs-link') and text()='{district_name}']"
 
-    @staticmethod
-    def _get_region_locator(region_name: str):
-        """Локатор области"""
-        return By.XPATH, f"//div[contains(@class, 'geo-popup')]//a[text()='{region_name}']"
-
-    @allure.step("Pick geolocation {district_name} {region_name}")
-    def select_geo_location(self, district_name: str, region_name: str):
-        """Выбрать гео"""
-        self.click_element(self.GEO_POPUP_WHITE_BUTTON)
-        self.wait_for_element_visible(self.GEO_POPUP_WINDOW)
-
-        district_locator = self._get_district_locator(district_name)
-        district_element = self.wait_for_element_visible(district_locator)
-        district_element.click()
-
-        region_locator = self._get_region_locator(region_name)
-        self.click_element(region_locator)
-
-        self.wait_for_element_invisible(self.GEO_POPUP_WINDOW)
+    # TODO: вынесено в отдельный файл, доделать
+    # @staticmethod
+    # def _get_district_locator(district_name: str):
+    #     """Локатор округа"""
+    #     return By.XPATH, f"//a[contains(@class, 'js--tabs-link') and text()='{district_name}']"
+    #
+    # @staticmethod
+    # def _get_region_locator(region_name: str):
+    #     """Локатор области"""
+    #     return By.XPATH, f"//div[contains(@class, 'geo-popup')]//a[text()='{region_name}']"
+    #
+    # @allure.step("Pick geolocation {district_name} {region_name}")
+    # def select_geo_location(self, district_name: str, region_name: str):
+    #     """Выбрать гео"""
+    #     self.click_element(self.GEO_POPUP_WHITE_BUTTON)
+    #     self.wait_for_element_visible(self.GEO_POPUP_WINDOW)
+    #
+    #     district_locator = self._get_district_locator(district_name)
+    #     district_element = self.wait_for_element_visible(district_locator)
+    #     district_element.click()
+    #
+    #     region_locator = self._get_region_locator(region_name)
+    #     self.click_element(region_locator)
+    #
+    #     self.wait_for_element_invisible(self.GEO_POPUP_WINDOW)
 
     @allure.step("Get result text geolocation")
     def get_current_geo_text(self) -> str:
