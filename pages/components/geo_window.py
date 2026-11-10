@@ -3,11 +3,14 @@ from pages.browser import Browser
 from selenium.webdriver.common.by import By
 
 
-class GeoWindow(Browser):
+class GeoWindow:
     GEO_POPUP_WINDOW = (By.CSS_SELECTOR, '.geo-popup')
     GEO_BUTTON_HEADER = (By.CSS_SELECTOR, 'a[href="#geo-popup"]')
-    GEO_POPUP_BLUE_BUTTON = (By.CSS_SELECTOR, 'a.btn._blue')
-    GEO_POPUP_WHITE_BUTTON = (By.CSS_SELECTOR, 'a.btn._white_bg[data-popup="init"]')
+    GEO_CORRECT_BUTTON = (By.CSS_SELECTOR, 'a.btn._blue')
+    GEO_INCORRECT_BUTTON = (By.CSS_SELECTOR, 'a.btn._white_bg[data-popup="init"]')
+
+    def __init__(self, browser: Browser):
+        self.browser = browser
 
     @staticmethod
     def _get_district_locator(district_name: str):
@@ -20,15 +23,14 @@ class GeoWindow(Browser):
         return By.XPATH, f"//div[contains(@class, 'geo-popup')]//a[text()='{region_name}']"
 
     @allure.step("Выбрать гео {district_name} {region_name}")
-    def select_geo(self, district_name: str, region_name: str):
-        self.click_element(self.GEO_POPUP_WHITE_BUTTON)
-        self.wait_for_element_visible(self.GEO_POPUP_WINDOW)
+    def select_geo(self, district_name: str, region_name: str) -> None:
+        self.browser.click_element(self.GEO_INCORRECT_BUTTON)
+        self.browser.wait_for_element_visible(self.GEO_POPUP_WINDOW)
 
         district_locator = self._get_district_locator(district_name)
-        district_element = self.wait_for_element_visible(district_locator)
-        district_element.click()
+        self.browser.click_element(district_locator)
 
         region_locator = self._get_region_locator(region_name)
-        self.click_element(region_locator)
+        self.browser.click_element(region_locator)
 
-        self.wait_for_element_invisible(self.GEO_POPUP_WINDOW)
+        self.browser.wait_for_element_invisible(self.GEO_POPUP_WINDOW)

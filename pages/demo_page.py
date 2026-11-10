@@ -2,6 +2,7 @@ import allure
 from selenium.webdriver.common.by import By
 
 from pages.browser import Browser
+from pages.components.chat_widget import ChatWidget
 
 
 class DemoPage(Browser):
@@ -76,22 +77,25 @@ class DemoPage(Browser):
         """Открыть страницу "Помощь" """
         self.click_element(self.HELP_BUTTON_HEADER)
 
-    @allure.step("Open the chat")
-    def open_the_chat(self):
-        """Открыть чат"""
-        self.click_element(self.CHAT_BUTTON)
+    # TODO: перенесено в файл с чатом, доделать
+    # @allure.step("Открыть чат")
+    # def open_the_chat(self):
+    #     self.chat_widget.open()
+    #     self.wait_for_element_visible(self.CHAT_WINDOW)
+    #     self.chat_widget.send_message(message_text)
+    #     self.chat_widget.get_current_message()
 
-    @allure.step("Enter text {text}")
-    def write_message(self, text: str):
-        """Написать сообщение в чат"""
-        self.wait_for_element_visible(self.CHAT_WINDOW)
-        self.send_keys_to_element(self.CHAT_FIELD, text)
-        self.click_element(self.CHAT_SEND_BUTTON)
-
-    @allure.step("View sent message")
-    def get_current_chat_message(self) -> str:
-        """Получить текст сообщения из чата"""
-        return self.get_text(self.CHAT_WINDOW)
+    # @allure.step("Enter text {text}")
+    # def write_message(self, text: str):
+    #     """Написать сообщение в чат"""
+    #     self.wait_for_element_visible(self.CHAT_WINDOW)
+    #     self.send_keys_to_element(self.CHAT_FIELD, text)
+    #     self.click_element(self.CHAT_SEND_BUTTON)
+    #
+    # @allure.step("View sent message")
+    # def get_current_chat_message(self) -> str:
+    #     """Получить текст сообщения из чата"""
+    #     return self.get_text(self.CHAT_WINDOW)
 
     @allure.step("Close the geolocation popup")
     def close_geo_popup(self):
