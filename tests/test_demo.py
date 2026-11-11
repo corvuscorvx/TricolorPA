@@ -19,17 +19,19 @@ def test_change_geo(demo_page):
 def test_write_in_the_chat(demo_page):
     message = "Это тест."
 
-    with allure.step("Accept all cookies"):
+    with allure.step("Принять все куки"):
         demo_page.accept_cookies()
 
-    with allure.step("Sending a message to the chat"):
+    with allure.step("Открыть страницу 'Помощь'"):
         demo_page.open_the_help_page()
-        demo_page.open_the_chat()
-        demo_page.write_message(message)
 
-    with allure.step("Displaying message"):
-        actual_message = demo_page.get_current_chat_message()
-        assert message in actual_message, f"Отображается {message}"
+    with allure.step("Написать сообщение в чат"):
+        demo_page.chat_widget.open()
+        demo_page.chat_widget.send_message(message)
+
+    with allure.step("Отображаение сообщения на экране"):
+        actual_message = demo_page.chat_widget.get_current_message()
+        assert message in actual_message, f"Ожидалось {message}, а отображается {actual_message}"
 
 
 def test_search(demo_page):
