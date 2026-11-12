@@ -1,81 +1,131 @@
 import allure
 
 
-def test_change_geo(demo_page):
+def test_change_geo_from_the_popup(main_page):
     district_name = "Северо-запад"
     region_name = "Санкт-Петербург и Ленинградская Область"
 
-    with allure.step("Accept all cookies"):
-        demo_page.accept_cookies()
+    with allure.step("Принять все куки"):
+        main_page.accept_cookies()
 
-    with allure.step("Geolocation selection"):
-        demo_page.select_geo_location(district_name, region_name)
+    with allure.step("Проверка текущего ГЕО"):
+        main_page.geo_popup.get_current_geo()
 
-    with allure.step("Geolocation check"):
-        actual_geo = demo_page.get_current_geo_text()
+    with allure.step("Изменить ГЕО"):
+        main_page.geo_popup.reject_auto_geo()
+
+    with allure.step("Выбор ГЕО"):
+        main_page.geo_popup.select_geo(district_name, region_name)
+
+    with allure.step("Проверка выбранного ГЕО"):
+        actual_geo = main_page.geo_popup.get_current_geo()
+        assert region_name in actual_geo, f"Отображается {region_name}"
+
+def test_change_geo_from_the_header(main_page):
+    district_name = "Сибирь"
+    region_name = "Байконур"
+
+    with allure.step("Проверка текущего ГЕО"):
+        main_page.geo_popup.get_current_geo()
+
+    with allure.step("Подтвердить ГЕО"):
+        main_page.geo_popup.confirm_auto_geo()
+
+    with allure.step("Нажать на ГЕО в хэдэре"):
+        main_page.geo_popup.open_geo_selection_from_header()
+
+    with allure.step("Выбор ГЕО"):
+        main_page.geo_popup.select_geo(district_name, region_name)
+
+    with allure.step("Проверка выбранного ГЕО"):
+        actual_geo = main_page.geo_popup.get_current_geo()
         assert region_name in actual_geo, f"Отображается {region_name}"
 
 
-def test_write_in_the_chat(demo_page):
+def test_write_in_the_chat(main_page):
     message = "Это тест."
 
     with allure.step("Принять все куки"):
-        demo_page.accept_cookies()
+        main_page.accept_cookies()
 
     with allure.step("Открыть страницу 'Помощь'"):
-        demo_page.open_the_help_page()
+        main_page.open_the_help_page()
 
     with allure.step("Написать сообщение в чат"):
-        demo_page.chat_widget.open()
-        demo_page.chat_widget.send_message(message)
+        main_page.chat_widget.open()
+        main_page.chat_widget.print_message(message)
+        main_page.chat_widget.send_message()
 
     with allure.step("Отображаение сообщения на экране"):
-        actual_message = demo_page.chat_widget.get_current_message()
+        actual_message = main_page.chat_widget.get_current_message()
+        assert message in actual_message, f"Ожидалось {message}, а отображается {actual_message}"
+
+def test_saving_text_in_field_chat(main_page):
+    message = "Должно сохраниться"
+
+    with allure.step("Принять все куки"):
+        main_page.accept_cookies()
+
+    with allure.step("Открыть страницу 'Помощь'"):
+        main_page.open_the_help_page()
+
+    with allure.step("Написать сообщение в чат"):
+        main_page.chat_widget.open()
+        main_page.chat_widget.print_message(message)
+
+    with allure.step("Свернуть виджет чата"):
+        main_page.chat_widget.cut_down_widget()
+
+    with allure.step("Повторно открыть чат"):
+        main_page.chat_widget.open()
+
+    with allure.step("Проверить сохранение текста в поле ввода"):
+        actual_message = main_page.chat_widget.get_message_in_filed()
         assert message in actual_message, f"Ожидалось {message}, а отображается {actual_message}"
 
 
-def test_search(demo_page):
+def test_search(main_page):
     text = "кино"
 
     with allure.step("Closing the geolocation popup"):
-        demo_page.close_geo_popup()
+        main_page.close_geo_popup()
 
     with allure.step("Search"):
-        demo_page.open_search()
-        demo_page.input_search_field(text)
-        demo_page.click_search_button()
+        main_page.open_search()
+        main_page.input_search_field(text)
+        main_page.click_search_button()
 
     with allure.step("Checking search results"):
-        actual_result = demo_page.get_current_search_result()
+        actual_result = main_page.get_current_search_result()
         assert text in actual_result, f"Отображается {text}"
 
 
-def test_negative_check_subscriptions_by_id(demo_page):
+def test_negative_check_subscriptions_by_id(main_page):
     number_id = 12345678912340
     error_text = "Неверный ID"
 
     with allure.step("Accept all cookies"):
-        demo_page.accept_cookies()
+        main_page.accept_cookies()
 
     with allure.step("Closing the geolocation popup"):
-        demo_page.close_geo_popup()
+        main_page.close_geo_popup()
 
     with allure.step("Checking subscriptions by id"):
-        demo_page.click_check_subscription_button()
-        demo_page.input_id(number_id)
-        demo_page.click_check_button()
+        main_page.click_check_subscription_button()
+        main_page.input_id(number_id)
+        main_page.click_check_button()
 
     with allure.step("Check of result"):
-        actual_error = demo_page.get_error_invalid_id()
+        actual_error = main_page.get_error_invalid_id()
         assert error_text in actual_error
 
 
-def test_redirect_to_online_cinema(demo_page):
+def test_redirect_to_online_cinema(main_page):
     url_part = "kino.tricolor.ru"
 
     with allure.step("Go to the online cinema"):
-        demo_page.open_online_cinema()
-        demo_page.wait_for_online_cinema_url(url_part)
+        main_page.open_online_cinema()
+        main_page.wait_for_online_cinema_url(url_part)
 
     with allure.step("URL check"):
-        assert url_part in demo_page.driver.current_url, f"Ожидали '{url_part}' в текущем URL, но получили '{demo_page.driver.current_url}'"
+        assert url_part in main_page.driver.current_url, f"Ожидали '{url_part}' в текущем URL, но получили '{main_page.driver.current_url}'"

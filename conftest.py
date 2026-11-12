@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from utils import attach
 from core.browser import Browser
 
-from pages.demo_page import DemoPage
+from pages.main_page import MainPage
 
 load_dotenv()
 
@@ -87,7 +87,7 @@ def driver(request):
 
 
 @pytest.fixture(scope="function")
-def demo_page(driver, base_url):
+def main_page(driver, base_url):
     driver.get(f"{base_url}")
     browser = Browser(driver)
-    return DemoPage(browser)
+    return MainPage(browser)
