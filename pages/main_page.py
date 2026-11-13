@@ -4,17 +4,12 @@ from selenium.webdriver.common.by import By
 from core.browser import Browser
 from pages.components.chat_widget import ChatWidget
 from pages.components.geo_window import GeoPopup
+from pages.components.search_in_header import SearchInHeader
 
 
 class MainPage:
     COOKIES_POPUP = (By.CSS_SELECTOR, '.cookie-popup__container')
     COOKIES_POPUP_BUTTON = (By.CSS_SELECTOR, 'a.js--cookie-success')
-
-    SEARCH_SHADE = (By.CSS_SELECTOR, '.head-search form')
-    SEARCH_FIELD = (By.CSS_SELECTOR, '.head-search input[type=text]')
-    SEARCH_BUTTON = (By.CSS_SELECTOR, 'button.btn')
-    SEARCH_RESULT_AREA = (By.CSS_SELECTOR, '.search-page-grid')
-    SEARCH_BUTTON_HEADER = (By.CSS_SELECTOR, 'a.header__search')
 
     HELP_BUTTON_HEADER = (By.CSS_SELECTOR, 'a[href="/help/?section=header"]')
 
@@ -30,6 +25,7 @@ class MainPage:
         self.browser = browser
         self.chat_widget = ChatWidget(browser)
         self.geo_popup = GeoPopup(browser)
+        self.search_in_header = SearchInHeader(browser)
 
     @allure.step('Принять все куки')
     def accept_cookies(self):
@@ -43,26 +39,16 @@ class MainPage:
     @allure.step('Написать сообщение в чат')
     def send_message_in_chat(self, message_text: str) -> str:
         self.chat_widget.open()
-        self.chat_widget.send_message(message_text)
+        self.chat_widget.print_message(message_text)
+        self.chat_widget.send_message()
         return self.chat_widget.get_current_message()
 
-    @allure.step('Открыть поле поиска из хэдэра')
-    def open_search(self):
-        self.browser.click_element(self.SEARCH_BUTTON_HEADER)
-
-    @allure.step('Ввести поискаовый запрос {text}')
-    def input_search_field(self, text):
-        self.browser.wait_for_element_visible(self.SEARCH_SHADE)
-        self.browser.send_keys_to_element(self.SEARCH_FIELD, text)
-
-    @allure.step('Нажать кнопку поиска запроса')
-    def click_search_button(self):
-        self.browser.click_element(self.SEARCH_BUTTON)
-        self.browser.wait_for_element_invisible(self.SEARCH_SHADE)
-
-    @allure.step('Получить текст результатов поиска')
-    def get_current_search_result(self):
-        return self.browser.get_text(self.SEARCH_RESULT_AREA)
+    @allure.step('Поиск по сайту из хэдэра')
+    def search(self, text: str) -> str:
+        self.search_in_header.open()
+        self.search_in_header.print_text(text)
+        self.search_in_header.click_search_button()
+        return self.search_in_header.get_current_search_result()
 
     @allure.step('Нажать кнопку "Проверить подписки"')
     def click_check_subscription_button(self):
@@ -73,11 +59,11 @@ class MainPage:
     def input_id(self, number_id: int):
         self.browser.send_keys_to_element(self.FIELD_ID, number_id)
 
-    @allure.step('Нажать кнопку првоерки')
+    @allure.step('Нажать кнопку проверки')
     def click_check_button(self):
         self.browser.click_element(self.CHECK_BUTTON)
 
-    @allure.step('Получить текст ошибки првоерки id')
+    @allure.step('Получить текст ошибки проверки id')
     def get_error_invalid_id(self):
         return self.browser.get_text(self.ERROR_AREA)
 
