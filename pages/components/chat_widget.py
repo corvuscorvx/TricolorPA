@@ -1,5 +1,6 @@
 import allure
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
 from core.browser import Browser
 
@@ -11,15 +12,22 @@ class ChatWidget:
     CHAT_BUTTON = (By.CSS_SELECTOR, 'div.chat-btn')
     CHAT_SEND_BUTTON = (By.CSS_SELECTOR, 'button.send-btn')
     CHAT_DOWN_BUTTON = (By.CSS_SELECTOR, '#chat-widget .chat-header button.centered')
+    CHAT_CLOSE_BUTTON = (By.CSS_SELECTOR, '.btn-wrapper__close-button')
+    LAST_MESSAGE = (By.CSS_SELECTOR, '#chat-widget .chat-messages > div:last-child')
 
     def __init__(self, browser: Browser):
         self.browser = browser
+
+    @allure.step('Навести курсор на иконку чата')
+    def hover_chat_button(self) -> None:
+        chat_button = self.browser.wait_for_element_visible(self.CHAT_BUTTON)
+        ActionChains(self.browser.driver).move_to_element(chat_button).perform()
 
     @allure.step('Открыть чат')
     def open(self) -> None:
         self.browser.click_element(self.CHAT_BUTTON)
 
-    @allure.step('Написать сообщение')
+    @allure.step('Написать сообщение в поле ввода')
     def print_message(self, text: str) -> None:
         self.browser.wait_for_element_visible(self.CHAT_WINDOW)
         self.browser.send_keys_to_element(self.CHAT_FIELD, text)
@@ -28,7 +36,7 @@ class ChatWidget:
     def send_message(self):
         self.browser.click_element(self.CHAT_SEND_BUTTON)
 
-    @allure.step('Получить текст сообщения из чата')
+    @allure.step('Получить текст из чата')
     def get_current_message(self) -> str:
         return self.browser.get_text(self.CHAT_BODY)
 
@@ -37,9 +45,28 @@ class ChatWidget:
         element = self.browser.wait_for_element_visible(self.CHAT_FIELD)
         return element.get_attribute("value")
 
+    @allure.step('Получить текст последнего сообщения')
+    def get_last_message(self) -> str:
+        return self.browser.get_text(self.LAST_MESSAGE)
+
     @allure.step('Свернуть виджет')
     def cut_down_widget(self):
         self.browser.click_element(self.CHAT_DOWN_BUTTON)
         self.browser.wait_for_element_invisible(self.CHAT_WINDOW)
 
-# TODO: прикрепить файл, закрыть
+    @allure.step('Закрыть иконку чата')
+    def close(self):
+        self.browser.click_element(self.CHAT_CLOSE_BUTTON)
+        self.browser.wait_for_element_invisible(self.CHAT_BUTTON)
+
+    @allure.step('Проверить, что иконка чата не отображается')
+    def get_invisible_chat(self) -> bool:
+        elements = self.browser.driver.find_elements(*self.CHAT_BUTTON)
+        return bool(elements and elements[0].is_displayed())
+
+    @allure.step('Проверить, что кнопка отправки недоступна')
+    def check_button_disabled(self) -> bool:
+        send_button = self.browser.wait_for_element_visible(self.CHAT_SEND_BUTTON)
+        return not send_button.is_enabled()
+
+# TODO: прикрепить файл

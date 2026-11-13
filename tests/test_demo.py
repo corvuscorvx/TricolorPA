@@ -44,9 +44,13 @@ def test_change_geo_from_the_header(main_page):
         assert region_name in actual_geo, f"Отображается {region_name}"
 
 
-def test_write_in_the_chat(main_page):
-    message = "Это тест."
-
+@pytest.mark.parametrize("text", [
+    "?",
+    "А" * 1000,
+    "G" * 999
+],
+    ids=["1", "1000", "999"])
+def test_write_in_the_chat_positive(main_page, text):
     with allure.step("Принять все куки"):
         main_page.accept_cookies()
 
@@ -54,11 +58,27 @@ def test_write_in_the_chat(main_page):
         main_page.open_the_help_page()
 
     with allure.step("Написать сообщение в чат"):
-        main_page.send_message_in_chat(message)
+        main_page.send_message_in_chat(text)
 
     with allure.step("Отображаение сообщения на экране"):
         actual_message = main_page.chat_widget.get_current_message()
-        assert message in actual_message, f"Ожидалось {message}, а отображается {actual_message}"
+        assert text in actual_message, f"Ожидалось {text}, а отображается {actual_message}"
+
+
+def test_write_in_the_chat_negative(main_page):
+    text = "y" * 1001
+    with allure.step("Принять все куки"):
+        main_page.accept_cookies()
+
+    with allure.step("Открыть страницу 'Помощь'"):
+        main_page.open_the_help_page()
+
+    with allure.step("Написать сообщение в чат"):
+        main_page.chat_widget.open()
+        main_page.chat_widget.print_message(text)
+
+    with allure.step("Проверить, что кнопка отправки недоступна"):
+        assert main_page.chat_widget.check_button_disabled(), f"Ожидали, что кнопка отправки будет недоступна"
 
 
 def test_saving_text_in_field_chat(main_page):
@@ -85,21 +105,57 @@ def test_saving_text_in_field_chat(main_page):
         assert message in actual_message, f"Ожидалось {message}, а отображается {actual_message}"
 
 
-# TODO: добавить тест на закрытие чата и прикрепление файла
+def test_close_chat(main_page):
+    with allure.step("Принять все куки"):
+        main_page.accept_cookies()
 
-# TODO: добавить параметризацию (цифры, спец.с, поиск не дал результата)
-def test_search(main_page):
-    text = "кино"
+    with allure.step("Открыть страницу 'Помощь'"):
+        main_page.open_the_help_page()
 
+    with allure.step("Закрыть чат"):
+        main_page.chat_widget.hover_chat_button()
+        main_page.chat_widget.close()
+
+    with allure.step("Проверка исчезновения иконки чата"):
+        assert not main_page.chat_widget.get_invisible_chat(), "Ожидалось, что иконка чата не отображается"
+
+# TODO: добавить тест на прикрепление файла
+
+@pytest.mark.parametrize("text", [
+    "Kino",
+    "17",
+    "Кино",
+    "КИНО",
+    "кино"
+],
+    ids=["en", "numbers", "ru_mix_case", "ru_upper_case", "ru_lower_case"])
+def test_search_positive(main_page, text):
     with allure.step("Закрыть поп-ап ГЕО"):
         main_page.geo_popup.confirm_auto_geo()
 
-    with allure.step("Поиск"):
+    with allure.step("Поиск по запросу '{text}'"):
         main_page.search(text)
 
     with allure.step("Проверить результат поиска"):
-        actual_result = main_page.search_in_header.get_current_search_result()
-        assert text in actual_result, f"Отображается {text}"
+        assert main_page.search_in_header.get_current_search_result(), f"Ожидались результаты поиска по запросу '{text}'"
+
+
+@pytest.mark.parametrize("text, result", [
+    ("+", "В поисковой фразе обнаружена ошибка"),
+    ("  ", "В поисковой фразе обнаружена ошибка"),
+    ("орориьботлрио", "К сожалению, на ваш поисковый запрос ничего не найдено")
+],
+    ids=["symbol", "empty", "incorrect"])
+def test_search_negative(main_page, text, result):
+    with allure.step("Закрыть поп-ап ГЕО"):
+        main_page.geo_popup.confirm_auto_geo()
+
+    with allure.step("Поиск по запросу '{text}'"):
+        main_page.search(text)
+
+    with allure.step("Проверить результат поиска"):
+        actual_message = main_page.search_in_header.get_current_search_result()
+        assert result in actual_message, f"Ожидали сообщение '{result}', но получили: '{actual_message}'"
 
 
 @pytest.mark.parametrize("number_id, result", [
@@ -109,7 +165,7 @@ def test_search(main_page):
     ("12345678912", "Неверный ID"),
     ("1234567890123", "Неверный ID")
 ],
-                         ids=["correct_id", "wrong_id", "empty_id", "incorrect_id_11", "incorrect_id_13"])
+    ids=["correct_id", "wrong_id", "empty_id", "incorrect_id_11", "incorrect_id_13"])
 def test_check_subscriptions_by_id(main_page, number_id, result):
     with allure.step("Принять все куки"):
         main_page.accept_cookies()
