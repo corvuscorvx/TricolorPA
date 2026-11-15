@@ -21,6 +21,8 @@ class MainPage:
 
     ONLINE_CINEMA_BUTTON = (By.CSS_SELECTOR, '.header ._online-kino a')
 
+    RESULT_ID_POPUP = (By.XPATH, "//div[contains(@class, 'h2') and text()='Результат проверки']")
+
     def __init__(self, browser: Browser):
         self.browser = browser
         self.chat_widget = ChatWidget(browser)
@@ -44,11 +46,10 @@ class MainPage:
         return self.chat_widget.get_current_message()
 
     @allure.step('Поиск по сайту из хэдэра')
-    def search(self, text: str) -> str:
+    def search(self, text: str) -> None:
         self.search_in_header.open()
         self.search_in_header.print_text(text)
         self.search_in_header.click_search_button()
-        return self.search_in_header.get_current_search_result()
 
     @allure.step('Нажать кнопку "Проверить подписки"')
     def click_check_subscription_button(self):
@@ -63,9 +64,13 @@ class MainPage:
     def click_check_button(self):
         self.browser.click_element(self.CHECK_BUTTON)
 
-    @allure.step('Получить текст ошибки проверки id')
-    def get_error_invalid_id(self):
+    @allure.step('Получить ошибки проверки id')
+    def get_error_invalid_id(self) -> str:
         return self.browser.get_text(self.ERROR_AREA)
+
+    @allure.step('Получить результат проверки подписок')
+    def get_id_check_result(self) -> str:
+        return self.browser.get_text(self.RESULT_ID_POPUP)
 
     @allure.step('Открыть онлайн-кинотеатр')
     def open_online_cinema(self):

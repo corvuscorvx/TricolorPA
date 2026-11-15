@@ -4,7 +4,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 from core.browser import Browser
 
-
 class ChatWidget:
     CHAT_BODY = (By.CSS_SELECTOR, 'div.chat-body')
     CHAT_FIELD = (By.CSS_SELECTOR, '#chat-widget .chat-footer textarea')

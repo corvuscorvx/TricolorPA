@@ -18,10 +18,9 @@ class SearchInHeader:
         self.browser.click_element(self.SEARCH_BUTTON_HEADER)
 
     @allure.step('Ввести поисковый запрос {text}')
-    def print_text(self, text: str) -> str:
+    def print_text(self, text: str):
         self.browser.wait_for_element_visible(self.SEARCH_SHADE)
         self.browser.send_keys_to_element(self.SEARCH_FIELD, text)
-        return self.browser.get_text(self.SEARCH_FIELD)
 
     @allure.step('Нажать кнопку поиска')
     def click_search_button(self):

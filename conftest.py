@@ -91,3 +91,5 @@ def main_page(driver, base_url):
     driver.get(f"{base_url}")
     browser = Browser(driver)
     return MainPage(browser)
+
+# TODO: добавить фикстуру создания файла для добавления в тестах

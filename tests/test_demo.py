@@ -78,7 +78,7 @@ def test_write_in_the_chat_negative(main_page):
         main_page.chat_widget.print_message(text)
 
     with allure.step("Проверить, что кнопка отправки недоступна"):
-        assert main_page.chat_widget.check_button_disabled(), f"Ожидали, что кнопка отправки будет недоступна"
+        assert main_page.chat_widget.check_button_disabled(), f"Ожидалось, что кнопка отправки недоступна"
 
 
 def test_saving_text_in_field_chat(main_page):

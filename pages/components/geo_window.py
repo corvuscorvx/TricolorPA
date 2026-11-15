@@ -1,7 +1,7 @@
 import allure
-from core.browser import Browser
 from selenium.webdriver.common.by import By
 
+from core.browser import Browser
 
 class GeoPopup:
     GEO_POPUP = (By.CSS_SELECTOR, 'header__geo-notice')
