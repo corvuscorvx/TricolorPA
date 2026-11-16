@@ -63,7 +63,7 @@ class ChatWidget:
         elements = self.browser.driver.find_elements(*self.CHAT_BUTTON)
         return bool(elements and elements[0].is_displayed())
 
-    @allure.step('Проверить, что кнопка отправки недоступна')
+    @allure.step('Проверить, что кнопка отправки сообщения недоступна')
     def check_button_disabled(self) -> bool:
         send_button = self.browser.wait_for_element_visible(self.CHAT_SEND_BUTTON)
         return not send_button.is_enabled()
