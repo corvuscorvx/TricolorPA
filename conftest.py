@@ -4,10 +4,12 @@ import pytest
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+
 from utils import attach
 from core.browser import Browser
 
 from pages.main_page import MainPage
+from pages.search_page import SearchPage
 
 load_dotenv()
 
@@ -91,5 +93,12 @@ def main_page(driver, base_url):
     driver.get(f"{base_url}")
     browser = Browser(driver)
     return MainPage(browser)
+
+@pytest.fixture(scope="function")
+def search_page(driver, base_url):
+    driver.get(f"{base_url}search/?q=")
+    browser = Browser(driver)
+    return SearchPage(browser)
+
 
 # TODO: добавить фикстуру создания файла для добавления в тестах

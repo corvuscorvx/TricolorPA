@@ -5,38 +5,36 @@ from core.browser import Browser
 from pages.components.chat_widget import ChatWidget
 from pages.components.geo_window import GeoPopup
 from pages.components.search_in_header import SearchInHeader
+from pages.components.header import Header
 
 
 class MainPage:
     COOKIES_POPUP = (By.CSS_SELECTOR, '.cookie-popup__container')
     COOKIES_POPUP_BUTTON = (By.CSS_SELECTOR, 'a.js--cookie-success')
 
-    HELP_BUTTON_HEADER = (By.CSS_SELECTOR, 'a[href="/help/?section=header"]')
-
     FIELD_ID = (By.CSS_SELECTOR, '[data-id="check"] input[name="id"]')
     ERROR_AREA = (By.CSS_SELECTOR, '[data-id="check"] .form-item__error')
     CHECK_BUTTON = (By.CSS_SELECTOR, '[data-id="check"] button[type="submit"]')
     CHECK_ID_AREA = (By.CSS_SELECTOR, 'div.main-check-id-form')
-    CHECKING_SUBSCRIPTION_BUTTON = (By.CSS_SELECTOR, 'a[href="#check"]')
-
-    ONLINE_CINEMA_BUTTON = (By.CSS_SELECTOR, '.header ._online-kino a')
-
     RESULT_ID_POPUP = (By.XPATH, "//div[contains(@class, 'h2') and text()='Результат проверки']")
+    CHECKING_SUBSCRIPTION_BUTTON = (By.CSS_SELECTOR, 'a[href="#check"]')
 
     def __init__(self, browser: Browser):
         self.browser = browser
         self.chat_widget = ChatWidget(browser)
         self.geo_popup = GeoPopup(browser)
         self.search_in_header = SearchInHeader(browser)
+        self.header = Header(browser)
 
+    # TODO: модернизировать работу с поп-апами на куки и гео (ОС в дз про тестовое задание)
     @allure.step('Принять все куки')
     def accept_cookies(self):
         self.browser.wait_for_element_visible(self.COOKIES_POPUP)
         self.browser.click_element(self.COOKIES_POPUP_BUTTON)
 
-    @allure.step('Открыть страницу "Помощь"')
+    @allure.step('Открыть страницу "Помощь" из хэдэра')
     def open_the_help_page(self):
-        self.browser.click_element(self.HELP_BUTTON_HEADER)
+        self.header.press_help_button()
 
     @allure.step('Написать сообщение в чат')
     def send_message_in_chat(self, message_text: str) -> str:
@@ -47,7 +45,7 @@ class MainPage:
 
     @allure.step('Поиск по сайту из хэдэра')
     def search(self, text: str) -> None:
-        self.search_in_header.open()
+        self.header.press_search_button()
         self.search_in_header.print_text(text)
         self.search_in_header.click_search_button()
 
@@ -72,9 +70,9 @@ class MainPage:
     def get_id_check_result(self) -> str:
         return self.browser.get_text(self.RESULT_ID_POPUP)
 
-    @allure.step('Открыть онлайн-кинотеатр')
+    @allure.step('Открыть онлайн-кинотеатр из хэдэра')
     def open_online_cinema(self):
-        self.browser.click_element(self.ONLINE_CINEMA_BUTTON)
+        self.header.press_online_cinema_button()
 
     @allure.step('Ожидание урла онлайн-кинотеатра')
     def wait_for_online_cinema_url(self, url_part):
