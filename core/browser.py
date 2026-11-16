@@ -3,6 +3,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
+
 class Browser:
 
     def __init__(self, driver: WebDriver, default_timeout: int = 10):
@@ -37,6 +38,9 @@ class Browser:
         element = self.wait.until(ec.presence_of_element_located(locator))
         self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
         return element
+
+    def get_current_url(self) -> str:
+        return self.driver.current_url
 
     def wait_for_url_in_new_tab(self, url_part: str) -> bool:
         self.wait.until(lambda driver: len(driver.window_handles) > 1)

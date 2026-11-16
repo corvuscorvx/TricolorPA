@@ -7,7 +7,6 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 from utils import attach
 from core.browser import Browser
-
 from pages.main_page import MainPage
 from pages.search_page import SearchPage
 
@@ -76,7 +75,7 @@ def driver(request):
     )
 
     driver.set_window_size(int(width), int(height))
-    driver.implicitly_wait(5)
+    # driver.implicitly_wait(5)
 
     yield driver
 
@@ -89,16 +88,18 @@ def driver(request):
 
 
 @pytest.fixture(scope="function")
-def main_page(driver, base_url):
-    driver.get(f"{base_url}")
-    browser = Browser(driver)
-    return MainPage(browser)
+def browser(driver):
+    return Browser(driver)
+
 
 @pytest.fixture(scope="function")
-def search_page(driver, base_url):
-    driver.get(f"{base_url}search/?q=")
-    browser = Browser(driver)
-    return SearchPage(browser)
+def main_page(browser, base_url):
+    browser.driver.get(f"{base_url}")
+    return MainPage(browser)
 
+
+@pytest.fixture(scope="function")
+def search_page(browser):
+    return SearchPage(browser)
 
 # TODO: добавить фикстуру создания файла для добавления в тестах

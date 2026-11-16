@@ -2,18 +2,16 @@ import allure
 from selenium.webdriver.common.by import By
 
 from core.browser import Browser
-from pages.components.header import Header
 
 
 class GeoPopup:
-    GEO_POPUP = (By.CSS_SELECTOR, 'header__geo-notice')
+    GEO_POPUP = (By.CSS_SELECTOR, '.header__geo-notice')
     GEO_SELECT_WINDOW = (By.CSS_SELECTOR, '.geo-popup')
     GEO_CORRECT_BUTTON = (By.CSS_SELECTOR, 'a.btn._blue')
     GEO_INCORRECT_BUTTON = (By.CSS_SELECTOR, 'a.btn._white_bg[data-popup="init"]')
 
     def __init__(self, browser: Browser):
         self.browser = browser
-        self.header = Header(browser)
 
     @allure.step('Согласиться с автоопределением ГЕО')
     def confirm_auto_geo(self) -> None:
@@ -34,11 +32,6 @@ class GeoPopup:
         self.browser.click_element(region_locator)
 
         self.browser.wait_for_element_invisible(self.GEO_SELECT_WINDOW)
-
-    @allure.step('Открыть окно выбора ГЕО из шапки')
-    def open_geo_selection_from_header(self) -> None:
-        self.header.press_geo_button()
-        self.browser.wait_for_element_visible(self.GEO_SELECT_WINDOW)
 
     @staticmethod
     def _get_district_locator(district_name: str):
