@@ -1,6 +1,25 @@
+<p align="center">
+  <img src="media/icons/Logo_tricolor.png" alt="Триколор">
+</p>
+
 # Tricolor UI Test Automation
 
 Демонстрационный проект с UI-автотестами для сайта [Триколор](https://www.tricolor.ru/).
+
+* 🔗 **Сборка проекта в Jenkins:** [Перейти в Jenkins](<https://jenkins.qa.guru/job/Demo_Tricolor/>)
+* 📊 **Актуальный отчёт Allure:** [Открыть Allure Report](<https://jenkins.qa.guru/job/Demo_Tricolor/15/allure/>)
+
+## Содержание
+
+- [Используемый стек](#используемый-стек)
+- [Что тестируется](#что-тестируется)
+- [Структура проекта](#структура-проекта)
+- [Локальный запуск](#локальный-запуск)
+- [Запуск тестов](#запуск-тестов)
+- [Формирование Allure-отчёта](#формирование-allure-отчёта)
+- [Запуск в Jenkins](#запуск-в-jenkins)
+- [Уведомления в Telegram](#уведомления-в-telegram)
+- [Демонстрация UI-теста](#демонстрация-ui-теста)
 
 Проект демонстрирует автоматизацию пользовательских сценариев веб-приложения: запуск тестов, формирование Allure-отчётов
 и выполнение браузерных тестов в удалённой среде Selenoid.
@@ -38,6 +57,9 @@
 - **Навигация:** переход в онлайн-кинотеатр с откртиыем в новой вкладке.
 - **Проверка подписок:** валидация формы проверки подписок.
 
+<details>
+<summary><b>📁 Структура проекта</b></summary>
+
 ## Структура проекта
 
 ```text
@@ -72,6 +94,9 @@ TricolorPA/
 ├── requirements.txt            # Зависимости проекта
 └── README.md                   # Документация проекта
 ```
+</details>
+<details>
+<summary><b>📁 Установка и настройка окружения</b></summary>
 
 ## Локальный запуск
 
@@ -101,7 +126,11 @@ SELENOID_URL=<адрес_вашего_selenoid>
 SELENOID_LOGIN=<логин>
 SELENOID_PASSWORD=<пароль>
 ```
-## Локальный запуск тестов
+</details>
+<details>
+<summary><b>📁 Запуск тестов</b></summary>
+
+## Запуск тестов
 
 Перед запуском убедитесь, что виртуальное окружение `.venv` активировано и вы находитесь в корневой папке проекта.
 
@@ -131,6 +160,10 @@ pytest -vv tests/test_demo.py
 
 Ключ `-vv` увеличивает подробность вывода Pytest по сравнению с `-v`, показывая полный diff значений в проверках `assert` при падении теста.
 
+</details>
+<details>
+<summary><b>📁 Allure</b></summary>
+
 ## Формирование Allure-отчёта
 
 Настройки формирования результатов Allure определены в файле `pytest.ini`:
@@ -148,11 +181,15 @@ allure serve allure-results
 
 ### Отчет Allure
 
+> Для работы команды `allure serve` на компьютере должны быть установлены Java и Allure Report Engine.
+
+</details>
+
 ![Отчет Allure](media/images/Allure_demo.png)
 ![Отчет Allure](media/images/Allure_demo_test.png)
 
-
-> Для работы команды `allure serve` на компьютере должны быть установлены Java и Allure Report Engine.
+<details>
+<summary><b>📁 Jenkins</b></summary>
 
 ## Запуск в Jenkins
 
@@ -166,7 +203,12 @@ allure serve allure-results
 
 ### Сборка в Jenkins
 
+</details>
+
 ![Сборка в Jenkins](media/images/Jenkins.png)
+
+<details>
+<summary><b>📁 Telegram</b></summary>
 
 ## Уведомления в Telegram
 
@@ -178,6 +220,8 @@ allure serve allure-results
 > публикуются в репозитории.
 
 ### Уведомление от бота
+
+</details>
 
 ![Уведомление Telegram-бота о завершении Jenkins-сборки](media/images/Telegram_notification.png)
 
