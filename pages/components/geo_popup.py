@@ -7,7 +7,7 @@ from core.browser import Browser
 class GeoPopup:
     GEO_POPUP = (By.CSS_SELECTOR, '.header__geo-notice')
     GEO_SELECT_WINDOW = (By.CSS_SELECTOR, '.geo-popup')
-    GEO_CORRECT_BUTTON = (By.CSS_SELECTOR, 'a.btn._blue')
+    GEO_CORRECT_BUTTON = (By.CSS_SELECTOR, '.header__geo-notice a.btn._blue')
     GEO_INCORRECT_BUTTON = (By.CSS_SELECTOR, 'a.btn._white_bg[data-popup="init"]')
 
     def __init__(self, browser: Browser):
