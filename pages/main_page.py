@@ -15,7 +15,7 @@ class MainPage(BasePage):
     RESULT_ID_POPUP = (By.XPATH, "//div[contains(@class, 'h2') and text()='Результат проверки']")
     CHECKING_SUBSCRIPTION_BUTTON = (By.CSS_SELECTOR, 'a[href="#check"]')
 
-    # TODO: модернизировать работу с поп-апами на куки и гео (ОС в дз про тестовое задание)
+
     @allure.step('Принять все куки')
     def accept_cookies(self) -> None:
         self.browser.wait_for_element_visible(self.COOKIES_POPUP)

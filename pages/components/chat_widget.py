@@ -68,5 +68,3 @@ class ChatWidget:
     def is_send_button_disabled(self) -> bool:
         send_button = self.browser.wait_for_element_visible(self.CHAT_SEND_BUTTON)
         return not send_button.is_enabled()
-
-# TODO: прикрепить файл

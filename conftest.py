@@ -102,4 +102,3 @@ def main_page(browser, base_url):
 def search_page(browser):
     return SearchPage(browser)
 
-# TODO: добавить фикстуру создания файла для добавления в тестах

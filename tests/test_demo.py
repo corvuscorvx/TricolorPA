@@ -155,7 +155,6 @@ def test_close_chat(main_page):
         assert main_page.chat_widget.is_chat_icon_invisible(), "Ожидалось, что иконка чата не отображается"
 
 
-# TODO: добавить тест на прикрепление файла
 
 
 @allure.epic("Поиск")
