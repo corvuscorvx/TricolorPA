@@ -57,10 +57,11 @@
 - **Навигация:** переход в онлайн-кинотеатр с откртиыем в новой вкладке.
 - **Проверка подписок:** валидация формы проверки подписок.
 
-<details>
-<summary><b>📁 Структура</b></summary>
 
 ## Структура проекта
+
+<details>
+<summary><b>Структура</b></summary>
 
 ```text
 TricolorPA/
@@ -95,10 +96,11 @@ TricolorPA/
 └── README.md                   # Документация проекта
 ```
 </details>
-<details>
-<summary><b>📁 Установка и настройка</b></summary>
 
 ## Локальный запуск
+
+<details>
+<summary><b>Установка и настройка</b></summary>
 
 1. Клонируйте репозиторий:
 
@@ -127,10 +129,11 @@ SELENOID_LOGIN=<логин>
 SELENOID_PASSWORD=<пароль>
 ```
 </details>
-<details>
-<summary><b>📁 Запуск</b></summary>
 
 ## Запуск тестов
+
+<details>
+<summary><b>Запуск</b></summary>
 
 Перед запуском убедитесь, что виртуальное окружение `.venv` активировано и вы находитесь в корневой папке проекта.
 
@@ -161,10 +164,11 @@ pytest -vv tests/test_demo.py
 Ключ `-vv` увеличивает подробность вывода Pytest по сравнению с `-v`, показывая полный diff значений в проверках `assert` при падении теста.
 
 </details>
-<details>
-<summary><b>📁 Allure</b></summary>
 
 ## Формирование Allure-отчёта
+
+<details>
+<summary><b>Allure</b></summary>
 
 Настройки формирования результатов Allure определены в файле `pytest.ini`:
 
@@ -188,10 +192,10 @@ allure serve allure-results
 ![Отчет Allure](media/images/Allure_demo.png)
 ![Отчет Allure](media/images/Allure_demo_test.png)
 
-<details>
-<summary><b>📁 Jenkins</b></summary>
-
 ## Запуск в Jenkins
+
+<details>
+<summary><b>Jenkins</b></summary>
 
 Проект интегрирован с Jenkins для автоматического запуска UI-тестов.
 
@@ -207,10 +211,10 @@ allure serve allure-results
 
 ![Сборка в Jenkins](media/images/Jenkins.png)
 
-<details>
-<summary><b>📁 Telegram</b></summary>
-
 ## Уведомления в Telegram
+
+<details>
+<summary><b>Telegram</b></summary>
 
 После завершения Jenkins-сборки Telegram-бот отправляет уведомление с результатом выполнения UI-тестов.
 
