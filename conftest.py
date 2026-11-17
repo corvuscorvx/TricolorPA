@@ -75,7 +75,7 @@ def driver(request):
     )
 
     driver.set_window_size(int(width), int(height))
-    # driver.implicitly_wait(5)
+    driver.implicitly_wait(5)
 
     yield driver
 
