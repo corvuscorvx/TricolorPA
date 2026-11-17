@@ -1,6 +1,25 @@
+<p align="center">
+  <img src="media/icons/Logo_tricolor.png" alt="Триколор">
+</p>
+
 # Tricolor UI Test Automation
 
 Демонстрационный проект с UI-автотестами для сайта [Триколор](https://www.tricolor.ru/).
+
+* 🔗 **Сборка проекта в Jenkins:** [Перейти в Jenkins](<https://jenkins.qa.guru/job/Demo_Tricolor/>)
+* 📊 **Актуальный отчёт Allure:** [Открыть Allure Report](<https://jenkins.qa.guru/job/Demo_Tricolor/15/allure/>)
+
+## Содержание
+
+- [Используемый стек](#используемый-стек)
+- [Что тестируется](#что-тестируется)
+- [Структура](#структура-проекта)
+- [Локальный запуск](#локальный-запуск)
+- [Запуск тестов](#запуск-тестов)
+- [Формирование Allure-отчёта](#формирование-allure-отчёта)
+- [Запуск в Jenkins](#запуск-в-jenkins)
+- [Уведомления в Telegram](#уведомления-в-telegram)
+- [Демонстрация UI-теста](#демонстрация-ui-теста)
 
 Проект демонстрирует автоматизацию пользовательских сценариев веб-приложения: запуск тестов, формирование Allure-отчётов
 и выполнение браузерных тестов в удалённой среде Selenoid.
@@ -8,17 +27,17 @@
 ## Используемый стек
 
 <p align="center">
-  <img src="assets/icons/Python.png" alt="Python" width="40" height="40">
+  <img src="media/icons/Python.png" alt="Python" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Selenium.png" alt="Selenium" width="40" height="40">
+  <img src="media/icons/Selenium.png" alt="Selenium" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Pytest.png" alt="Pytest" width="40" height="40">
+  <img src="media/icons/Pytest.png" alt="Pytest" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Allure.png" alt="Allure" width="40" height="40">
+  <img src="media/icons/Allure.png" alt="Allure" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Jenkins.png" alt="Jenkins" width="40" height="40">
+  <img src="media/icons/Jenkins.png" alt="Jenkins" width="40" height="40">
   &nbsp;&nbsp;
-  <img src="assets/icons/Selenoid.png" alt="Selenoid" width="40" height="40">
+  <img src="media/icons/Selenoid.png" alt="Selenoid" width="40" height="40">
 </p>
 
 - **Python** — язык программирования, на котором написаны автотесты.
@@ -32,36 +51,52 @@
 
 Автоматизированы пользовательские сценарии:
 
-- Выбор геопозиции при первом посещении сайта.
-- Отправка сообщения в чат поддержки.
-- Поиск по сайту.
-- Переход в онлайн-кинотеатр.
-- Проверка подписок по Триколор-id.
+- **Геолокация:** отклонение автоматически определенного ГЕО; выбор и смена ГЕО вручную.
+- **Чат поддержки:** отправка валидных сообщений, сохранение черновика текста, сворачивание виджета и скрытие иконки чата, негативные сценарии.
+- **Поиск:** поиск из хэдэра по валидным запросам, обработка ошибок валидации.
+- **Навигация:** переход в онлайн-кинотеатр с откртиыем в новой вкладке.
+- **Проверка подписок:** валидация формы проверки подписок.
+
+<details>
+<summary><b>📁 Структура</b></summary>
 
 ## Структура проекта
 
 ```text
 TricolorPA/
-├── assets/
-│   └── gif/                    # Гифки
-│   └── icons/                  # Иконки технологий для README
-│   └── images/                 # Скриншоты
+├── core/                       
+│   └── browser.py/             # Обертка над WebDriver (ожидания, клики, скролл)
 │
-├── pages/                      # Page Object
-│   └── base_page.py            # Базовый класс для всех страниц
-│   └── demo_page.py            # Страница демонстрации тестов
+├── media/
+│   └── gif/                    # Гифки демонстрации прогона тестов
+│   └── icons/                  # Иконки технологий для README
+│   └── images/                 # Скриншоты отчетов, сборок, уведомлений
+│
+├── pages/
+│   ├── components/             # Переиспользуемые UI-компоненты
+│   │   ├── chat_widget.py      # Виджет чата поддержки
+│   │   ├── geo_window.py       # Поп-ап и модальноре окно выбора ГЕО
+│   │   ├── header.py           # Шапка (хэдэр)
+│   │   └── search_in_header.py # Выпадающая строка поиска в хэдэре
+│   ├── base_page.py            # Базовый класс страниц
+│   ├── main_page.py            # Главная страница сайта
+│   └── search_page.py          # Страница результатов поиска
 │
 ├── tests/                      # Автотесты
-│   └── test_demo.py            # Тесты для страницы демонстрации
+│   └── test_demo.py            # Тесты для страниц демонстрации
 │
 ├── utils/                      # Вспомогательные утилиты и хелперы
 │   └── attach.py               # Модуль для добавления вложений
-│
+│ 
+├── .env                        # Переменное окружение
 ├── conftest.py                 # Фикстуры Pytest и настройка браузера с подключением к Selenoid
 ├── pytest.ini                  # Конфигурация Pytest
 ├── requirements.txt            # Зависимости проекта
 └── README.md                   # Документация проекта
 ```
+</details>
+<details>
+<summary><b>📁 Установка и настройка</b></summary>
 
 ## Локальный запуск
 
@@ -71,18 +106,31 @@ TricolorPA/
 git clone https://github.com/corvuscorvx/TricolorPA.git
 ```
 
-2. Откройте проект в PyCharm.
-
-3. Создайте виртуальное окружение `.venv` на базе Python 3.14.
-
-4. В терминале PyCharm активируйте окружение и установите зависимости:
+2. Создайте виртуальное окружение `.venv`:
 
 ```bash
+python -m venv .venv
 .venv\Scripts\Activate
+```
+3. Установите зависимости:
+
+```bash
 pip install -r requirements.txt
 ```
 
-## Локальный запуск тестов
+4. Создайте файл `.env` в корне проекта и укажите параметры подключения:
+
+```
+BASE_URL=https://www.tricolor.ru/
+SELENOID_URL=<адрес_вашего_selenoid>
+SELENOID_LOGIN=<логин>
+SELENOID_PASSWORD=<пароль>
+```
+</details>
+<details>
+<summary><b>📁 Запуск</b></summary>
+
+## Запуск тестов
 
 Перед запуском убедитесь, что виртуальное окружение `.venv` активировано и вы находитесь в корневой папке проекта.
 
@@ -98,7 +146,7 @@ pytest -v tests/test_demo.py
 
 ### Запуск одного теста:
 
-Чтобы запустить один тест из файла, после пути к файлу укажите его имя через `::`:
+Чтобы запустить конкретный тест из файла, укажите его имя через `::`:
 
 ```bash
 pytest -v tests/test_demo.py::<имя_теста>
@@ -110,10 +158,11 @@ pytest -v tests/test_demo.py::<имя_теста>
 pytest -vv tests/test_demo.py
 ```
 
-Ключ `-vv` увеличивает подробность вывода Pytest по сравнению с `-v`.
+Ключ `-vv` увеличивает подробность вывода Pytest по сравнению с `-v`, показывая полный diff значений в проверках `assert` при падении теста.
 
-При падении теста команда может показать более полный diff значений в проверках `assert` и меньше сокращать длинные
-сообщения об ошибках.
+</details>
+<details>
+<summary><b>📁 Allure</b></summary>
 
 ## Формирование Allure-отчёта
 
@@ -124,29 +173,23 @@ pytest -vv tests/test_demo.py
 addopts = --clean-alluredir --alluredir=allure-results
 ```
 
-Поэтому для запуска UI-тестов и одновременного сохранения результатов Allure достаточно выполнить команду:
-
-```bash
-pytest -v tests/test_demo.py
-```
-
-После завершения тестового прогона результаты будут сохранены в папке `allure-results`.
-
-Для формирования и открытия отчёта выполните:
+После завершения тестового прогона результаты сохраняются в папку `allure-results`. Для генерации и открытия интерактивного HTML-отчёта выполните:
 
 ```bash
 allure serve allure-results
 ```
 
-Команда создаёт временный HTML-отчёт на основе данных из `allure-results` и автоматически открывает его в браузере.
-
 ### Отчет Allure
 
-![Отчет Allure](assets/images/Allure_demo.png)
-![Отчет Allure](assets/images/Allure_demo_test.png)
-
-
 > Для работы команды `allure serve` на компьютере должны быть установлены Java и Allure Report Engine.
+
+</details>
+
+![Отчет Allure](media/images/Allure_demo.png)
+![Отчет Allure](media/images/Allure_demo_test.png)
+
+<details>
+<summary><b>📁 Jenkins</b></summary>
 
 ## Запуск в Jenkins
 
@@ -160,7 +203,12 @@ allure serve allure-results
 
 ### Сборка в Jenkins
 
-![Сборка в Jenkins](assets/images/Jenkins.png)
+</details>
+
+![Сборка в Jenkins](media/images/Jenkins.png)
+
+<details>
+<summary><b>📁 Telegram</b></summary>
 
 ## Уведомления в Telegram
 
@@ -173,8 +221,10 @@ allure serve allure-results
 
 ### Уведомление от бота
 
-![Уведомление Telegram-бота о завершении Jenkins-сборки](assets/images/Telegram_notification.png)
+</details>
+
+![Уведомление Telegram-бота о завершении Jenkins-сборки](media/images/Telegram_notification.png)
 
 ### Демонстрация UI-теста
 
-![Демонстрация выполнения UI-теста](assets/gif/Ui_test_chat.gif)
+![Демонстрация выполнения UI-теста](media/gif/Ui_test_chat.gif)

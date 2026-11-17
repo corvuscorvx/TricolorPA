@@ -4,9 +4,11 @@ import pytest
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from utils import attach
 
-from pages.demo_page import DemoPage
+from utils import attach
+from core.browser import Browser
+from pages.main_page import MainPage
+from pages.search_page import SearchPage
 
 load_dotenv()
 
@@ -19,8 +21,8 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--browser_version",
-        default="153.0",
-        choices=("148.0", "153.0", "154.0"),
+        default="157.0",
+        choices=("148.0", "153.0", "156.0", "157.0"),
         help="Browser version to use"
     )
     parser.addoption(
@@ -41,7 +43,7 @@ def base_url(request):
 
 
 @pytest.fixture(scope="function")
-def setup_browser(request):
+def driver(request):
     browser = request.config.getoption("--browser")
     browser_version = request.config.getoption("--browser_version")
     window_size = request.config.getoption("--window_size")
@@ -86,6 +88,17 @@ def setup_browser(request):
 
 
 @pytest.fixture(scope="function")
-def demo_page(setup_browser, base_url):
-    setup_browser.get(f"{base_url}")
-    return DemoPage(setup_browser)
+def browser(driver):
+    return Browser(driver)
+
+
+@pytest.fixture(scope="function")
+def main_page(browser, base_url):
+    browser.driver.get(f"{base_url}")
+    return MainPage(browser)
+
+
+@pytest.fixture(scope="function")
+def search_page(browser):
+    return SearchPage(browser)
+
